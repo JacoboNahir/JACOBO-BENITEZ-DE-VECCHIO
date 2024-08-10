@@ -1,1 +1,1 @@
-# Aplicación principal
+print("odnum aloh")

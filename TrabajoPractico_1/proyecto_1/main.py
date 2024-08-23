@@ -25,7 +25,7 @@ def juego():
     a=leer_archivo_y_almacenamiento_de_datos("frases_de_peliculas.txt")
     b=lista_peliculas(a)
     c=obtener_frase_y_opciones(a,b,3)
-    return render_template('juego.html',a,b,c)
+    return render_template('juego.html',a=a,b=b,c=c)
 
 if __name__ == "__main__":
     app.run(debug=True)

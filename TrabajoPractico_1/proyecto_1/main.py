@@ -123,7 +123,8 @@ def mensaje():
 #define una ruta en la aplicación web que responde a las solicitudes dirigidas a la URL /listar_peliculas
 def listar_peliculas():#se ejecutará cuando un usuario acceda a la ruta /listar_peliculas.
     peliculas = lista_peliculas(matriz_peliculas)
-    return render_template("listar.html", peliculas=peliculas)
+    x = len(peliculas)
+    return render_template("listar.html", peliculas=peliculas, x=x)
 """se utiliza la función render_template para generar la respuesta HTML utilizando la plantilla listar.html.
 - Se pasa la variable peliculas a la plantilla, que contendrá la lista de películas obtenida anteriormente. Esto permite que la plantilla acceda a 
 esa información para mostrarla en la interfaz de usuario."""

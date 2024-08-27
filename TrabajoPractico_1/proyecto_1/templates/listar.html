@@ -32,7 +32,7 @@
     <div class="container">
         <h1>Listado de Películas</h1>
         <p>Lista de Películas disponibles:</p>
-    {% for i in range(peliculas) %}
+    {% for i in range(len(peliculas)) %}
         <ul>
             <li>{{i+1}}- {{peliculas[i]}} </li>
         </ul>

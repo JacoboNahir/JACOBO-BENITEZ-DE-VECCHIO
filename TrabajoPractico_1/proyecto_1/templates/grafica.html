@@ -36,19 +36,33 @@
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
         }
-        a.button {
-            display: inline-block;
-            margin-top: 20px;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            padding: 10px 15px;
-            background-color: rgba(0, 123, 255, 0.7);
-            transition: background-color 0.3s ease;
+        .boton_resultados_globales {
+            position: fixed; /* Fija el botón en la ventana */
+            bottom: 20px; /* Distancia desde el fondo */
+            right: 20px; /* Distancia desde la izquierda */
+            background-color: #4CAF50; /* Color de fondo */
+            color: white; /* Color del texto */
+            padding: 10px 20px; /* Espaciado interno */
+            border: none; /* Sin borde */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* Cambia el cursor al pasar el ratón */
         }
-        a.button:hover {
-            background-color: rgba(0, 123, 255, 0.9);
-            text-decoration: none;
+        .boton_resultados_globales:hover {
+            background-color: #45a049; /* Color de fondo al pasar el ratón */
+        }
+        .boton_volver {
+            position: fixed; /* Fija el botón en la ventana */
+            bottom: 20px; /* Distancia desde el fondo */
+            left: 20px; /* Distancia desde la izquierda */
+            background-color: #4CAF50; /* Color de fondo */
+            color: white; /* Color del texto */
+            padding: 10px 20px; /* Espaciado interno */
+            border: none; /* Sin borde */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* Cambia el cursor al pasar el ratón */
+        }
+        .boton_volver:hover {
+            background-color: #45a049; /* Color de fondo al pasar el ratón */
         }
     </style>
 </head>
@@ -56,8 +70,8 @@
     <div class="container">
         <h1>Gráfico de Curvas</h1>
         <img src="{{ img_url_2 }}" alt="Gráfico de Curvas" class="center">
-        <a href="{{ img_url_2 }}" download="grafico_curvas.png" class="button">Descargar gráfico</a>
-        <a href="{{ url_for('resultados_globales') }}" class="button">Volver</a>
     </div>
+    <input type="button" class="boton_volver" value="Regresar al inicio" onclick="window.location.href='http://127.0.0.1:5000/';">
+    <input type="button" class="boton_resultados_globales" value="Volver a Resultados Globales" onclick="window.location.href='http://127.0.0.1:5000/resultados_globales';">
 </body>
 </html>

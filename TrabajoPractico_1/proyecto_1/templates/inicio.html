@@ -19,7 +19,7 @@
         .boton_lista:hover {
             background-color: #45a049; /* Color de fondo al pasar el ratón */
         }
-        .boton_resultados_locales {
+        .boton_resultado_local{
             position: fixed; /* Fija el botón en la ventana */
             bottom: 20px; /* Distancia desde el fondo */
             left: 50%; /* Coloca el botón en el medio horizontalmente */
@@ -31,7 +31,7 @@
             border-radius: 5px; /* Bordes redondeados */
             cursor: pointer; /* Cambia el cursor al pasar el ratón */
         }
-        .boton_resultados_locales:hover {
+        .boton_resultado_local:hover {
             background-color: #45a049; /* Color de fondo al pasar el ratón */
         }
         .boton_resultados_globales {
@@ -63,9 +63,10 @@
             background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente */
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra */
+            color: #060606;
         }
         h1, p, label, input[type="submit"], a {
-            color: #333; /* Color del texto */
+            color: #060606; /* Color del texto */
         }
         form {
             margin-top: 20px;
@@ -90,7 +91,7 @@
     </div>
     <br>
     <input type="button" class="boton_lista" value="Ver lista de películas" onclick="window.location.href='http://127.0.0.1:5000/listar_peliculas';">
-    <input type="button" class="boton_resultados_locales" value="Resultados Locales" onclick="window.location.href='http://127.0.0.1:5000/resultados_locales';">
+    <input type="button" class="boton_resultado_local" value="Resultado Local" onclick="window.location.href='http://127.0.0.1:5000/resultado_local';">
     <input type="button" class="boton_resultados_globales" value="Resultados Globales" onclick="window.location.href='http://127.0.0.1:5000/resultados_globales';">
 </body>
 </html>

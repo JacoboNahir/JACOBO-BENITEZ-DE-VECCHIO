@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados Globales</title>
+    <style>
+        body {
+            background-image: url('https://img.freepik.com/foto-gratis/collage-fondo-pelicula_23-2149876025.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra */
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2; /* Fondo gris claro para el encabezado */
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Fondo gris claro para filas pares */
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            background-color: rgba(0, 123, 255, 0.1); /* Fondo ligeramente azul */
+        }
+        a:hover {
+            background-color: rgba(0, 123, 255, 0.2);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resultados Globales</h1>
+        <table>
+            <tr>
+                <th>Nombre</th>
+                <th>Puntaje</th>
+                <th>Hora</th>
+                <th>Dia</th>
+            </tr>
+            {% for jugador in resultados %}
+            <tr>
+                <td>{{ jugador["nombre"] }}</td>
+                <td>{{ jugador["puntaje"] }}</td>
+                <td>{{ jugador["hora"] }}</td>
+                <td>{{ jugador["dia"] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="{{ url_for('inicio') }}">Volver al Inicio</a>
+        <div class="container text-center">
+    <a href="{{ url_for('mostrar_grafica_curvas') }}" class="btn btn-primary">Ver Gráfico de Curvas</a>
+    <a href="{{ url_for('mostrar_grafica_tortita') }}" class="btn btn-primary">Ver Gráfico Torta</a>
+</body>
+</html>

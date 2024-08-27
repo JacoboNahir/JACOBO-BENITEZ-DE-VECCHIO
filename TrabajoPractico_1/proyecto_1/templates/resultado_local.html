@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado Personal</title>
+    <style>
+                .boton_volver {
+            position: fixed; /* Fija el botón en la ventana */
+            bottom: 20px; /* Distancia desde el fondo */
+            left: 20px; /* Distancia desde la izquierda */
+            background-color: #4CAF50; /* Color de fondo */
+            color: white; /* Color del texto */
+            padding: 10px 20px; /* Espaciado interno */
+            border: none; /* Sin borde */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* Cambia el cursor al pasar el ratón */
+        }
+        .boton_volver:hover {
+            background-color: #45a049; /* Color de fondo al pasar el ratón */
+        }
+        .boton_listar_peliculas {
+            position: fixed; /* Fija el botón en la ventana */
+            bottom: 20px; /* Distancia desde el fondo */
+            left: 50%; /* Coloca el botón en el medio horizontalmente */
+            transform: translateX(-50%); /* Ajusta el botón a la izquierda para centrarlo */
+            background-color: #4CAF50; /* Color de fondo */
+            color: white; /* Color del texto */
+            padding: 10px 20px; /* Espaciado interno */
+            border: none; /* Sin borde */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* Cambia el cursor al pasar el ratón */
+        }
+        .boton_listar_peliculas:hover {
+            background-color: #45a049; /* Color de fondo al pasar el ratón */
+        }
+        .boton_resultados_globales {
+            position: fixed; /* Fija el botón en la ventana */
+            bottom: 20px; /* Distancia desde el fondo */
+            right: 20px; /* Distancia desde la izquierda */
+            background-color: #4CAF50; /* Color de fondo */
+            color: white; /* Color del texto */
+            padding: 10px 20px; /* Espaciado interno */
+            border: none; /* Sin borde */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* Cambia el cursor al pasar el ratón */
+        }
+        .boton_resultados_globales:hover {
+            background-color: #45a049; /* Color de fondo al pasar el ratón */
+        }
+        body {
+            background-image: url('https://img.freepik.com/foto-gratis/collage-fondo-pelicula_23-2149876025.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra */
+            text-align: center;
+        }
+        p {
+            margin: 10px 0;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resultados del ùltimo juego</h1>
+        <p>Nombre: {{ nombre }}</p>
+        <p>Hora de juego: {{ hora_jugado }}</p>
+        <p>Aciertos: {{ puntaje }}</p>
+        <p>Dia: {{ dia }}</p>
+    </div>
+
+    <input type="button" class="boton_volver" value="Volver al inicio" onclick="window.location.href='http://127.0.0.1:5000';">
+    <input type="button" class="boton_listar_peliculas" value="Lista de Películas" onclick="window.location.href='http://127.0.0.1:5000/listar_peliculas';">
+    <input type="button" class="boton_resultados_globales" value="Resultados Globales" onclick="window.location.href='http://127.0.0.1:5000/resultados_globales';">
+
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar Gráfica de Torta</title>
+    <style>
+        body {
+            background-color: #87CEEB;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centrar contenido verticalmente */
+            align-items: center; /* Centrar contenido horizontalmente */
+            min-height: 100vh; /* Altura mínima de la página */
+        }
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        .center img {
+            display: block;
+            margin: 0 auto;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+        a.button {
+            display: inline-block;
+            margin-top: 20px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            background-color: rgba(0, 123, 255, 0.7);
+            transition: background-color 0.3s ease;
+        }
+        a.button:hover {
+            background-color: rgba(0, 123, 255, 0.9);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gráfico de Torta de Aciertos y Desaciertos</h1>
+        <img src="{{ img_url }}" alt="Gráfico de Torta de Aciertos y Desaciertos" class="center">
+        <a href="{{ img_url }}" download="grafico_torta.png" class="button">Descargar gráfico</a>
+        <a href="{{ url_for('resultados_globales') }}" class="button">Volver</a>
+    </div>
+</body>
+</html>

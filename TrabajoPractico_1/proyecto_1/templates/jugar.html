@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jugar</title>
+    <style>
+        body {
+            background-image: url('https://img.freepik.com/foto-gratis/collage-fondo-pelicula_23-2149876025.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra */
+        }
+        h1, p {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            margin: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .boton_volver {
+            position: fixed; /* Fija el botón en la ventana */
+            bottom: 20px; /* Distancia desde el fondo */
+            left: 20px; /* Distancia desde la izquierda */
+            background-color: #4CAF50; /* Color de fondo */
+            color: white; /* Color del texto */
+            padding: 10px 20px; /* Espaciado interno */
+            border: none; /* Sin borde */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* Cambia el cursor al pasar el ratón */
+        }
+        .boton_volver:hover {
+            background-color: #45a049; /* Color de fondo al pasar el ratón */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Trivia de Películas</h1>
+        <p>Tienes {{ num_intentos }} intentos para acabar el juego.</p>
+        <p>¿Cuál película corresponde a la siguiente frase?</p>
+        <p>{{ session["frase"] }}</p>
+        
+        <form action="/mensaje" method="post">
+            {% if opciones %}
+                {% for opcion in opciones %}
+                    <input type="radio" id="{{ opcion_seleccionada }}" name="opcion_seleccionada" value="{{opcion}}">
+                    <label for="{{opcion}}">{{opcion}}</label><br>
+                {% endfor %}
+            {% endif %}
+            <button type="submit">Responder</button>
+        </form>
+        
+        <br> 
+        <input type="button" class="boton_volver" value="Volver al inicio" onclick="window.location.href='http://127.0.0.1:5000/';">
+        
+    </div>
+</body>
+</html>

@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, session, jsonify
 from modules.config import app
-from modules.modulos import leer_archivo_existente,leer_archivo_y_almacenamiento_de_datos,lista_peliculas,obtener_frase_y_opciones,guardar_resultados,mostrar_grafica_torta,mostrar_grafica
+from modules.servicios import listar_peliculas,frase_opciones,guardo_paso_resultado,muestro_grafica,muestro_grafica_torta,verifico
 import random
 from datetime import datetime
 import matplotlib.pyplot as plt
@@ -8,8 +8,6 @@ import io
 import base64
 
 app.secret_key = 'llave_para_seguridad'
-
-matriz_peliculas=leer_archivo_y_almacenamiento_de_datos("frases_de_peliculas.txt")
 
 """ Decorador @app.route("/"): Este decorador define una ruta en la aplicación web. En este caso, la ruta es la raíz ("/"), lo que significa que esta 
 función se ejecutará cuando un usuario acceda a la URL principal de la aplicación.
@@ -26,8 +24,8 @@ def inicio():#función que se ejecuta cuando se accede a la ruta definida.
         session["usuario"] = request.form["usuario"] ; """Almacena el nombre de usuario proporcionado en el formulario."""        
         session["frases_previas"] = [] ; """Inicializa una lista vacía para almacenar frases anteriores."""        
         session["aciertos"] = 0 ; """Inicializa el contador de aciertos a cero.""" 
-        peliculas =lista_peliculas(matriz_peliculas)
-        frase, opciones_mezcladas, pelicula_correcta = obtener_frase_y_opciones(matriz_peliculas,peliculas)
+        peliculas =listar_peliculas('frases_de_peliculas.txt')
+        frase, opciones_mezcladas, pelicula_correcta = frase_opciones('frases_de_peliculas.txt')
         session["frase"] = frase ; """Almacena la frase generada en la sesión."""
         session["opciones_mezcladas"] = opciones_mezcladas ; """Almacena las opciones mezcladas."""
         session["pelicula_correcta"] = pelicula_correcta ; """Almacena la película correcta."""
@@ -108,8 +106,8 @@ def mensaje():
         print(session['frase'])
 
         #genera una nueva frase y opciones para el proximo juego
-        peliculas = lista_peliculas(matriz_peliculas)
-        frase, opciones_mezcladas, pelicula_correcta = obtener_frase_y_opciones(matriz_peliculas,peliculas)
+        peliculas = listar_peliculas('frases_de_peliculas')
+        frase, opciones_mezcladas, pelicula_correcta = frase_opciones('frases_de_peliculas')
         session["frase"] = frase
         session["opciones_mezcladas"] = opciones_mezcladas
         session["pelicula_correcta"] = pelicula_correcta
@@ -122,7 +120,7 @@ def mensaje():
 @app.route("/listar_peliculas")#No se especifican métodos en esta línea, lo que significa que esta ruta manejará solicitudes GET por defecto.
 #define una ruta en la aplicación web que responde a las solicitudes dirigidas a la URL /listar_peliculas
 def listar_peliculas():#se ejecutará cuando un usuario acceda a la ruta /listar_peliculas.
-    peliculas = lista_peliculas(matriz_peliculas)
+    peliculas = listar_peliculas('frases_de_peliculas')
     x = len(peliculas)
     return render_template("listar.html", peliculas=peliculas, x=x)
 """se utiliza la función render_template para generar la respuesta HTML utilizando la plantilla listar.html.
@@ -143,7 +141,7 @@ la partida."""
 
 @app.route("/resultados_globales")
 def resultados_globales():
-    guardar=guardar_resultados(resultados)
+    guardar=guardo_paso_resultado('resultados.txt')
     """se llama a la función guardar_resultados, pasándole la lista resultados como argumento. guarda la 
     informacion por cada jugador de la lista resultados y los guarda en un archivo txt para almacenar la informacion"""
     return render_template("resultados_globales.html", resultados_dias=guardar)
@@ -170,8 +168,8 @@ def ver_grafico():
 
 @app.route("/grafica")
 def mostrar_grafica_curvas():
-    resultados_dias = guardar_resultados(resultados)
-    img_url_2 = mostrar_grafica(resultados_dias)#mostrar_grafica`genera una gráfica y devuelve la URL o la ruta del archivo de imagen de la gráfica generada, que se guarda en `img_url_2.
+    resultados_dias = guardo_paso_resultado('resultados.txt')
+    img_url_2 = muestro_grafica('resultados.txt')#mostrar_grafica`genera una gráfica y devuelve la URL o la ruta del archivo de imagen de la gráfica generada, que se guarda en `img_url_2.
     return render_template("grafica.html", img_url_2=img_url_2)
 """Finalmente, la función retorna el resultado de render_template, que renderiza la plantilla mostrar_grafica.html.
 - Se pasa img_url_2 como argumento a la plantilla, lo que permite que la página web acceda a la imagen generada y la muestre."""
@@ -180,8 +178,8 @@ def mostrar_grafica_curvas():
 #que muestra esa gráfica.
 @app.route("/grafica_torta")
 def mostrar_grafica_tortita():
-        resultado_dias=guardar_resultados(resultados)
-        img_url = mostrar_grafica_torta(resultado_dias)#devolverá la URL de la imagen generada, que se almacena en img_url.  
+        resultado_dias=guardo_paso_resultado('resultados.txt')
+        img_url = muestro_grafica_torta('resultados.txt') #devolverá la URL de la imagen generada, que se almacena en img_url.  
         return render_template("grafica_torta.html", img_url=img_url)
 """- Finalmente, se utiliza render_template para renderizar la plantilla HTML llamada mostrar_grafica_torta.html.
 - Se pasa img_url a la plantilla, lo que permite mostrar la gráfica de torta en la página web."""
@@ -190,11 +188,9 @@ def mostrar_grafica_tortita():
 
 @app.route('/verificar_archivo')
 def verificar_archivo():
-    archivo_resultados = 'resultados.txt'
     try:
-        with open(archivo_resultados, 'r') as arch:
-            content = arch.read().strip()
-            return jsonify({'vacío': len(content) == 0})
+        content=verifico('resultados.txt')
+        return jsonify({'vacío': len(content) == 0})
     except FileNotFoundError:
         return jsonify({'vacío': True})
 

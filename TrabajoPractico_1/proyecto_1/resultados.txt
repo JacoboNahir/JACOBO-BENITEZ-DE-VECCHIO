@@ -1,3 +1,9 @@
-{'nombre': 'mateo', 'puntaje': '2/3', 'hora': '03:50:36', 'dia': '28/08/2024'}
-{'nombre': 'mateo', 'puntaje': '5/5', 'hora': '04:17:23', 'dia': '28/08/2024'}
-{'nombre': 'mateo', 'puntaje': '1/4', 'hora': '04:27:19', 'dia': '28/08/2024'}
+{'nombre': 'mateo', 'puntaje': '3/3', 'hora': '08:53:31', 'dia': '28/08/2024'}
+{'nombre': 'mateo', 'puntaje': '1/5', 'hora': '08:55:03', 'dia': '28/08/2024'}
+{'nombre': 'mateo', 'puntaje': '3/3', 'hora': '08:53:31', 'dia': '28/08/2024'}
+{'nombre': 'mateo', 'puntaje': '1/5', 'hora': '08:55:03', 'dia': '28/08/2024'}
+{'nombre': 'mateo', 'puntaje': '3/3', 'hora': '08:53:31', 'dia': '28/08/2024'}
+{'nombre': 'mateo', 'puntaje': '1/5', 'hora': '08:55:03', 'dia': '28/08/2024'}
+{'nombre': 'mateo', 'puntaje': '3/3', 'hora': '08:53:31', 'dia': '28/08/2024'}
+{'nombre': 'mateo', 'puntaje': '1/5', 'hora': '08:55:03', 'dia': '28/08/2024'}
+{'nombre': 'jusn', 'puntaje': '2/3', 'hora': '09:06:05', 'dia': '28/08/2024'}

@@ -146,8 +146,8 @@ def resultados_globales():
     guardar=keep_resultados(resultados)
     """se llama a la función guardar_resultados, pasándole la lista resultados como argumento. guarda la 
     informacion por cada jugador de la lista resultados y los guarda en un archivo txt para almacenar la informacion"""
-    return render_template("resultado_global.html", resultados=resultados)
-"""Finalmente, la función devuelve una respuesta que renderiza la plantilla resultado_global.html.
+    return render_template("resultados_globales.html", resultados=resultados)
+"""Finalmente, la función devuelve una respuesta que renderiza la plantilla resultados_globales.html.
 - Se le pasa la lista resultados como un contexto a la plantilla, lo que permitirá que los resultados se muestren en la interfaz de usuario."""
 
 def ver_grafico():
@@ -168,21 +168,21 @@ def ver_grafico():
 #En resumen, esta función obtiene resultados de la sesión, genera un gráfico y lo guarda en una ubicación específica, y luego muestra ese gráfico en 
 #una plantilla web.
 
-@app.route("/mostrar_grafica")
+@app.route("/grafica")
 def mostrar_grafica_curvas():
     resultados_dias = keep_resultados(resultados)
     img_url_2 = mostrar_grafica(resultados_dias)#mostrar_grafica`genera una gráfica y devuelve la URL o la ruta del archivo de imagen de la gráfica generada, que se guarda en `img_url_2.
-    return render_template("mostrar_grafica.html", img_url_2=img_url_2)
+    return render_template("grafica.html", img_url_2=img_url_2)
 """Finalmente, la función retorna el resultado de render_template, que renderiza la plantilla mostrar_grafica.html.
 - Se pasa img_url_2 como argumento a la plantilla, lo que permite que la página web acceda a la imagen generada y la muestre."""
 
 #En resumen, la función mostrar_grafica_curvas se encarga de procesar los resultados, generar una gráfica a partir de ellos y renderizar una página 
 #que muestra esa gráfica.
-@app.route("/mostrar_grafica_torta")
+@app.route("/grafica_torta")
 def mostrar_grafica_tortita():
         resultado_dias=keep_resultados(resultados)
         img_url = mostrar_grafica_torta(resultado_dias)#devolverá la URL de la imagen generada, que se almacena en img_url.  
-        return render_template("mostrar_grafica_torta.html", img_url=img_url)
+        return render_template("grafica_torta.html", img_url=img_url)
 """- Finalmente, se utiliza render_template para renderizar la plantilla HTML llamada mostrar_grafica_torta.html.
 - Se pasa img_url a la plantilla, lo que permite mostrar la gráfica de torta en la página web."""
 #En resumen, esta función maneja la solicitud para mostrar una gráfica de torta, procesando los resultados almacenados, generando la gráfica y 

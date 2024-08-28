@@ -25,7 +25,21 @@
         margin: 5px 0;
         padding: 10px;
         border-radius: 5px;}
-    
+        .boton_volver {
+            position: fixed; /* Fija el botón en la ventana */
+            bottom: 20px; /* Distancia desde el fondo */
+            left: 20px; /* Distancia desde la izquierda */
+            background-color: #4CAF50; /* Color de fondo */
+            color: white; /* Color del texto */
+            padding: 10px 20px; /* Espaciado interno */
+            border: none; /* Sin borde */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* Cambia el cursor al pasar el ratón */
+        }
+        .boton_volver:hover {
+            background-color: #45a049; /* Color de fondo al pasar el ratón */
+        }
+
     </style>
 </head>
 <body>
@@ -37,6 +51,9 @@
             <li>{{i+1}}- {{peliculas[i]}} </li>
         </ul>
     {% endfor %}
+
+    <input type="button" class="boton_volver" value="Volver al inicio" onclick="window.location.href='http://127.0.0.1:5000/';">
+
     </div>
 </body>
 </html>

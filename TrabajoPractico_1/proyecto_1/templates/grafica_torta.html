@@ -64,6 +64,26 @@
         .boton_resultados_globales:hover {
             background-color: #45a049; /* Color de fondo al pasar el ratón */
         }
+
+        .boton_descarga_torta{
+            position: fixed; 
+            bottom: 20px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #ff0000;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+        }
+        .boton_descarga_torta:hover {
+            background-color: #b30000;
+        }
     </style>
 </head>
 <body>
@@ -73,5 +93,8 @@
     </div>
     <input type="button" class="boton_volver" value="Regresar al inicio" onclick="window.location.href='http://127.0.0.1:5000/';">
     <input type="button" class="boton_resultados_globales" value="Volver a Resultados Globales" onclick="window.location.href='http://127.0.0.1:5000/resultados_globales';">
+    <a href="{{ img_url }}" download="Descarga_Gráfica_Torta.jpg" class="boton_descarga_torta">
+        Descargar Imagen
+    </a>
 </body>
 </html>

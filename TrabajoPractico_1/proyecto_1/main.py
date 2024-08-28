@@ -1,6 +1,6 @@
-from flask import render_template, request, redirect, url_for, session
+from flask import render_template, request, redirect, url_for, session, jsonify
 from modules.config import app
-from modules.modulos import leer_archivo_y_almacenamiento_de_datos,lista_peliculas,obtener_frase_y_opciones,keep_resultados,mostrar_grafica_torta,mostrar_grafica
+from modules.modulos import leer_archivo_existente,leer_archivo_y_almacenamiento_de_datos,lista_peliculas,obtener_frase_y_opciones,guardar_resultados,mostrar_grafica_torta,mostrar_grafica
 import random
 from datetime import datetime
 import matplotlib.pyplot as plt
@@ -143,10 +143,10 @@ la partida."""
 
 @app.route("/resultados_globales")
 def resultados_globales():
-    guardar=keep_resultados(resultados)
+    guardar=guardar_resultados(resultados)
     """se llama a la función guardar_resultados, pasándole la lista resultados como argumento. guarda la 
     informacion por cada jugador de la lista resultados y los guarda en un archivo txt para almacenar la informacion"""
-    return render_template("resultados_globales.html", resultados=resultados)
+    return render_template("resultados_globales.html", resultados_dias=guardar)
 """Finalmente, la función devuelve una respuesta que renderiza la plantilla resultados_globales.html.
 - Se le pasa la lista resultados como un contexto a la plantilla, lo que permitirá que los resultados se muestren en la interfaz de usuario."""
 
@@ -170,7 +170,7 @@ def ver_grafico():
 
 @app.route("/grafica")
 def mostrar_grafica_curvas():
-    resultados_dias = keep_resultados(resultados)
+    resultados_dias = guardar_resultados(resultados)
     img_url_2 = mostrar_grafica(resultados_dias)#mostrar_grafica`genera una gráfica y devuelve la URL o la ruta del archivo de imagen de la gráfica generada, que se guarda en `img_url_2.
     return render_template("grafica.html", img_url_2=img_url_2)
 """Finalmente, la función retorna el resultado de render_template, que renderiza la plantilla mostrar_grafica.html.
@@ -180,13 +180,24 @@ def mostrar_grafica_curvas():
 #que muestra esa gráfica.
 @app.route("/grafica_torta")
 def mostrar_grafica_tortita():
-        resultado_dias=keep_resultados(resultados)
+        resultado_dias=guardar_resultados(resultados)
         img_url = mostrar_grafica_torta(resultado_dias)#devolverá la URL de la imagen generada, que se almacena en img_url.  
         return render_template("grafica_torta.html", img_url=img_url)
 """- Finalmente, se utiliza render_template para renderizar la plantilla HTML llamada mostrar_grafica_torta.html.
 - Se pasa img_url a la plantilla, lo que permite mostrar la gráfica de torta en la página web."""
 #En resumen, esta función maneja la solicitud para mostrar una gráfica de torta, procesando los resultados almacenados, generando la gráfica y 
 #renderizando la página correspondiente para mostrarla.
+
+@app.route('/verificar_archivo')
+def verificar_archivo():
+    archivo_resultados = 'resultados.txt'
+    try:
+        with open(archivo_resultados, 'r') as arch:
+            content = arch.read().strip()
+            return jsonify({'vacío': len(content) == 0})
+    except FileNotFoundError:
+        return jsonify({'vacío': True})
+
 if __name__ == "__main__":#verifica si el script se está ejecutando como el programa principal. En Python, cada archivo tiene un 
 #atributo __name__. Si el archivo se ejecuta directamente, __name__ se establece en "__main__". Si el archivo se importa como un módulo en otro 
 #script, __name__ tendrá el nombre del archivo.

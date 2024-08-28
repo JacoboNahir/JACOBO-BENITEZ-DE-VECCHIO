@@ -62,33 +62,44 @@ def obtener_frase_y_opciones(matriz_peliculas,lista_peliculas):
     """
     return frase_aleatoria, opciones_aleatorias, pelicula_correcta
 
-def keep_resultados(resultados):
+def guardar_resultados(resultados):
     """guarda la informacion por cada jugador de la lista resultados y los guarda en un archivo txt para almacenar
     la informacion"""
     resultados_dias = []
-    with open('resultados.txt', 'a') as archivo:
+    archivo_resultados='resultados.txt'
+    existen=leer_archivo_existente(archivo_resultados)
+    with open(archivo_resultados, 'a') as archivo:
         for resultado in resultados:
+            resultado_str = str(resultado)
             usuario = resultado["nombre"]
             puntaje = resultado["puntaje"]
             hora_jugada = resultado["hora"]
             dia = resultado["dia"]
-            archivo.write(f"{usuario},{puntaje},{hora_jugada},{dia}\n")
+            if resultado_str not in existen:
+                existen.add(resultado_str)
+                archivo.write( resultado_str + "\n")
 
-    with open('resultados.txt', 'r') as archivo:
+    with open(archivo_resultados, 'r') as archivo:
         for linea in archivo:
             datos = linea.strip().split(',')
-            usuario = datos[0]
-            puntaje = datos[1]  
-            hora_jugada = datos[2]
-            dia = datos[3]
+            usuario_res = datos[0].split(":")
+            usuario = usuario_res[1].strip().strip("'")
+            puntaje_res = datos[1].split(":")
+            puntaje = puntaje_res[1].strip().strip("'")
+            hora_jugada_res = datos[2].split(":")
+            horas = hora_jugada_res[1].strip().strip("'")
+            minutos = hora_jugada_res[2]
+            segundos = hora_jugada_res[3].strip("'")
+            hora_jugada = f"{horas}:{minutos}:{segundos}"
+            dia_res = datos[3].split(":")
+            dia = dia_res[1].strip("}").strip().strip("'")
             resultados_dias.append((usuario, puntaje, hora_jugada, dia))
 
     return resultados_dias
 
 def mostrar_grafica_torta(resultados_dias):
     """obtiene los aciertos y desaciertos totales de cada jugador y hace la grafica de la torta"""
-    if resultados_dias:
-        resultados_dias.pop(0)
+
     aciertos = []
     desaciertos = []
     for linea in resultados_dias:
@@ -98,6 +109,9 @@ def mostrar_grafica_torta(resultados_dias):
         cantidad_desaciertos = int(desaciertos_str)
         aciertos.append(cantidad_aciertos)
         desaciertos.append(cantidad_desaciertos - cantidad_aciertos)  
+
+    total_aciertos = 0       
+    total_desaciertos = 0
 
     total_aciertos = sum(aciertos)
     total_desaciertos = sum(desaciertos)
@@ -116,39 +130,42 @@ def mostrar_grafica_torta(resultados_dias):
 
 def mostrar_grafica(resultados_dias):
     """obtiene los aciertos y desaciertos totales de cada jugador y hace la grafica de curvas"""
-    if resultados_dias:
-        resultados_dias.pop(0)
+    
     resultados_agrupados = {}
+    contadores = {}
 
     for linea in resultados_dias:
         nombre=linea[0]
         puntaje=str(linea[1])
         dia=linea[-1]
-        print(puntaje)
+
         aciertos_str, total = puntaje.split('/')
         aciertos = int(aciertos_str)
         desaciertos = int(total) - aciertos
-        clave = (nombre, dia)
 
-        if clave in resultados_agrupados:
-            resultados_agrupados[clave]['aciertos'] += aciertos
-            resultados_agrupados[clave]['desaciertos'] += desaciertos
-        else:
-            resultados_agrupados[clave] = {'aciertos': aciertos, 'desaciertos': desaciertos}
+        clave_base = (nombre, dia)
 
-    nombres_dias = []
+        if clave_base not in contadores:
+            contadores[clave_base] = 0
+        contadores[clave_base] += 1
+
+        clave = (nombre, dia, contadores[clave_base])
+
+        resultados_agrupados[clave] = {'aciertos': aciertos, 'desaciertos': desaciertos}
+
+    nombres_dias_juego = []
     aciertos_totales = []
     desaciertos_totales = []
 
     for clave, resultados in resultados_agrupados.items():
-        nombre, dia = clave
+        nombre, dia, contador = clave
         aciertos_totales.append(resultados['aciertos'])
         desaciertos_totales.append(resultados['desaciertos'])
-        nombres_dias.append(f'{nombre} - {dia}')
+        nombres_dias_juego.append(f'{nombre} - {dia} - juego N°{contador}')
 
     fig, ax = plt.subplots()
-    ax.plot(nombres_dias, desaciertos_totales, label='Desaciertos', color="#AF7AC5", marker='o')
-    ax.plot(nombres_dias, aciertos_totales, label='Aciertos', color='#2ECC71', marker='o')
+    ax.plot(nombres_dias_juego, desaciertos_totales, label='Desaciertos', color="#AF7AC5", marker='o')
+    ax.plot(nombres_dias_juego, aciertos_totales, label='Aciertos', color='#2ECC71', marker='o')
 
     ax.set_xlabel("Fecha y Usuario", fontdict={'fontsize': 10, 'fontweight': 'bold', 'color': 'tab:blue'})
     ax.set_ylabel("Cantidad")
@@ -175,3 +192,14 @@ def mostrar_grafica(resultados_dias):
     img_url_2 = f'data:image/png;base64,{grafico_data}'
 
     return img_url_2
+
+def leer_archivo_existente(archivo):
+    resultados_existentes = set()
+    try:
+        with open(archivo, 'r') as file:
+            for line in file:
+                resultados_existentes.add(line.strip())
+    except FileNotFoundError:
+        # Si el archivo no existe, no hay resultados existentes
+        pass
+    return resultados_existentes

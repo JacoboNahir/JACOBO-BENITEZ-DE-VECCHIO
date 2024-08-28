@@ -4,10 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultados Globales</title>
+    <script>
+        // Función para verificar el estado del archivo en el servidor
+        function verificarArchivo() {
+            fetch('/verificar_archivo')
+                .then(response => response.json())
+                .then(data => {
+                    var boton_graf = document.getElementById('boton_grafica');
+                    var boton_graf_torta = document.getElementById('boton_grafica_torta');
+                    boton_graf.disabled = data.vacío;  // Habilitar si el archivo no está vacío
+                    boton_graf_torta.disabled = data.vacío;
+                })
+                .catch(error => {
+                    console.error('Error al verificar el archivo:', error);
+                });
+        }
+
+        // Inicializar el estado del botón en la carga de la página
+        window.onload = function() {
+            verificarArchivo();
+        }
+    </script>
     <style>
         body {
             background-image: url('https://img.freepik.com/foto-gratis/collage-fondo-pelicula_23-2149876025.jpg');
-            background-size: cover;
+            background-size: 105%;
             background-position: center;
             font-family: Arial, sans-serif;
             margin: 0;
@@ -93,18 +114,18 @@
                 <th>Hora</th>
                 <th>Dia</th>
             </tr>
-            {% for jugador in resultados %}
+            {% for i in resultados_dias %}
             <tr>
-                <td>{{ jugador["nombre"] }}</td>
-                <td>{{ jugador["puntaje"] }}</td>
-                <td>{{ jugador["hora"] }}</td>
-                <td>{{ jugador["dia"] }}</td>
+                <td>{{ i[0] }}</td>
+                <td>{{ i[1] }}</td>
+                <td>{{ i[2] }}</td>
+                <td>{{ i[3] }}</td>
             </tr>
             {% endfor %}
         </table>
         <div class="container text-center">
     <input type="button" class="boton_volver" value="Volver al inicio" onclick="window.location.href='http://127.0.0.1:5000/';">
-    <input type="button" class="boton_grafica" value="Ver Gráfica" onclick="window.location.href='http://127.0.0.1:5000/grafica';">
-    <input type="button" class="boton_grafica_torta" value="Volver Gráfica de Torta" onclick="window.location.href='http://127.0.0.1:5000/grafica_torta';">
+    <input type="button" id="boton_grafica" class="boton_grafica" value="Ver Gráfica" onclick="window.location.href='http://127.0.0.1:5000/grafica';">
+    <input type="button" id="boton_grafica_torta" class="boton_grafica_torta" value="Volver Gráfica de Torta" onclick="window.location.href='http://127.0.0.1:5000/grafica_torta';">
 </body>
 </html>

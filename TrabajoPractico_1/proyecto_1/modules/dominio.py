@@ -11,9 +11,9 @@ def lista_peliculas(matriz):
             lista_peliculas.append(i[1])
     return sorted(lista_peliculas)
 
-def obtener_frase_y_opciones(matriz_peliculas,lista_peliculas):
+def obtener_frase_y_opciones(matriz_peliculas,lista_peliculas,frases_previas):
     """encuentra una frase al azar, su opcion corecta y dos opciones incorrectas"""
-    frases = set(frase for frase, _ in matriz_peliculas)
+    frases = set(frase for frase, _ in matriz_peliculas if frase not in frases_previas)
     frase_aleatoria = random.choice(list(frases))
     pelicula_correcta = next(pelicula for frase, pelicula in matriz_peliculas if frase == frase_aleatoria)  
     opciones = [pelicula for pelicula in lista_peliculas if pelicula != pelicula_correcta]

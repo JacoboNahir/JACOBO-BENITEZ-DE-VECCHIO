@@ -7,13 +7,10 @@ import matplotlib.pyplot as plt
 import io
 import base64
 
-app.secret_key = 'llave_para_seguridad'
+RUTA = "./data/"
+archivo_peliculas  = RUTA + "frases_de_peliculas.txt"
+archivo_resultados = RUTA + "resultados.txt"
 
-""" Decorador @app.route("/"): Este decorador define una ruta en la aplicación web. En este caso, la ruta es la raíz ("/"), lo que significa que esta 
-función se ejecutará cuando un usuario acceda a la URL principal de la aplicación.
-Métodos ["GET", "POST"]: Se especifica que la función inicio puede manejar tanto solicitudes GET como POST.
-GET: Normalmente se utiliza para obtener datos.
-POST: Se utiliza para enviar datos al servidor. """
 @app.route("/", methods=["GET", "POST"]) 
 
 def inicio():#función que se ejecuta cuando se accede a la ruta definida.
@@ -24,8 +21,8 @@ def inicio():#función que se ejecuta cuando se accede a la ruta definida.
         session["usuario"] = request.form["usuario"] ; """Almacena el nombre de usuario proporcionado en el formulario."""        
         session["frases_previas"] = [] ; """Inicializa una lista vacía para almacenar frases anteriores."""        
         session["aciertos"] = 0 ; """Inicializa el contador de aciertos a cero.""" 
-        peliculas =listar_peliculas('frases_de_peliculas.txt')
-        frase, opciones_mezcladas, pelicula_correcta = frase_opciones('frases_de_peliculas.txt')
+        peliculas = listar_peliculas(archivo_peliculas)
+        frase, opciones_mezcladas, pelicula_correcta = frase_opciones(archivo_peliculas,session["frases_previas"])
         session["frase"] = frase ; """Almacena la frase generada en la sesión."""
         session["opciones_mezcladas"] = opciones_mezcladas ; """Almacena las opciones mezcladas."""
         session["pelicula_correcta"] = pelicula_correcta ; """Almacena la película correcta."""
@@ -49,8 +46,6 @@ def introduccion():#se ejecutará cuando un usuario acceda a la ruta /introducci
         return redirect(url_for("jugar"))#se utiliza redirect(url_for("jugar")) para redirigir al usuario a otra ruta llamada jugar.
     #url_for("jugar") genera la URL correspondiente a la función jugar, lo que permite que se redirija al usuario a la página o función correspondiente de forma segura y dinámica.
     return render_template("introduccion.html")
-"""Si la solicitud no es un POST (es decir, es un GET), se renderiza una plantilla HTML llamada introduccion.html. 
-Esto significa que el usuario verá esta página cuando acceda a la URL /introduccion sin haber enviado un formulario."""
                            
 resultados=[]
 @app.route("/jugar", methods=["GET", "POST"])
@@ -59,25 +54,25 @@ def jugar():#se ejecutará cuando un usuario acceda a la ruta /jugar.
         num_intentos = session["num_intentos"]#Se recupera el número de intentos permitidos desde la sesión del usuario y se almacena en la variable
         if session["cont"] >= session["num_intentos"]:#se verifica si el contador de intentos (session["cont"]) ha alcanzado o superado el número 
         #máximo de intentos (session["num_intentos"]).
-            """Almacenamiento de resultados en la sesión"""
+            #Almacenamiento de resultados en la sesión
             session["nombre"] = session.get("usuario")#Se guarda el nombre del usuario en la sesión.
             session["hora_jugado"] = datetime.now().strftime("%H:%M:%S")#Se obtiene la hora 
             session["dia"] = datetime.now().strftime("%d/%m/%Y")#se obtiene el dia
             session["aciertos"] = session.get("aciertos", 0)#Se recuperan los aciertos del usuario (o se establece en 0 si no hay datos) y se calcula 
-            session["puntaje"] = f"{session['aciertos']}/{session['num_intentos']}"# el puntaje en formato aciertos/número de intentos.
+            session["puntaje"] = f"{session['aciertos']}/{session['num_intentos']}" # el puntaje en formato aciertos/número de intentos.
             resultados.append({"nombre": session["nombre"], "puntaje": session["puntaje"], "hora": session["hora_jugado"], "dia": session["dia"]})
-            """Se agrega un diccionario con los detalles del usuario (nombre, puntaje, hora de juego y día) a la lista resultados."""
+            #Se agrega un diccionario con los detalles del usuario (nombre, puntaje, hora de juego y día) a la lista resultados.
             return redirect("/resultado_local") #Después de que el usuario ha terminado el juego, se redirige a una ruta llamada 
         #resultado_personal, donde se mostrarán los resultados del juego.
  
         return render_template("jugar.html", num_intentos=session["num_intentos"],
                                frases_seleccionada=session["frase"], opciones=session['opciones_mezcladas'],
                                pelicula_correcta=session['pelicula_correcta'])
-    """Si el usuario aún no ha alcanzado el límite de intentos, se renderiza la plantilla jugar.html con varios datos pasados como contexto:
-      - num_intentos: el número máximo de intentos.
-      - frases_seleccionada: la frase que se está usando en el juego.
-      - opciones: las opciones de respuesta mezcladas.
-      - pelicula_correcta: la película que es la respuesta correcta."""
+    #Si el usuario aún no ha alcanzado el límite de intentos, se renderiza la plantilla jugar.html con varios datos pasados como contexto:
+    #  - num_intentos: el número máximo de intentos.
+    #  - frases_seleccionada: la frase que se está usando en el juego.
+    #  - opciones: las opciones de respuesta mezcladas.
+    #  - pelicula_correcta: la película que es la respuesta correcta.
 
     return render_template("jugar.html", num_intentos=session["num_intentos"],
                            frases_seleccionada=session['frase'], opciones=session['opciones_mezcladas'],
@@ -106,8 +101,8 @@ def mensaje():
         print(session['frase'])
 
         #genera una nueva frase y opciones para el proximo juego
-        peliculas = listar_peliculas('frases_de_peliculas')
-        frase, opciones_mezcladas, pelicula_correcta = frase_opciones('frases_de_peliculas')
+        peliculas = listar_peliculas(archivo_peliculas)
+        frase, opciones_mezcladas, pelicula_correcta = frase_opciones(archivo_peliculas,session["frases_previas"])
         session["frase"] = frase
         session["opciones_mezcladas"] = opciones_mezcladas
         session["pelicula_correcta"] = pelicula_correcta
@@ -119,8 +114,8 @@ def mensaje():
 
 @app.route("/listar_peliculas")#No se especifican métodos en esta línea, lo que significa que esta ruta manejará solicitudes GET por defecto.
 #define una ruta en la aplicación web que responde a las solicitudes dirigidas a la URL /listar_peliculas
-def listar_peliculas():#se ejecutará cuando un usuario acceda a la ruta /listar_peliculas.
-    peliculas = listar_peliculas('frases_de_peliculas')
+def lista_de_peliculas():#se ejecutará cuando un usuario acceda a la ruta /listar_peliculas.
+    peliculas = listar_peliculas(archivo_peliculas)
     x = len(peliculas)
     return render_template("listar.html", peliculas=peliculas, x=x)
 """se utiliza la función render_template para generar la respuesta HTML utilizando la plantilla listar.html.
@@ -141,7 +136,7 @@ la partida."""
 
 @app.route("/resultados_globales")
 def resultados_globales():
-    guardar=guardo_paso_resultado('resultados.txt')
+    guardar=guardo_paso_resultado(resultados,archivo_resultados)
     """se llama a la función guardar_resultados, pasándole la lista resultados como argumento. guarda la 
     informacion por cada jugador de la lista resultados y los guarda en un archivo txt para almacenar la informacion"""
     return render_template("resultados_globales.html", resultados_dias=guardar)
@@ -168,8 +163,7 @@ def ver_grafico():
 
 @app.route("/grafica")
 def mostrar_grafica_curvas():
-    resultados_dias = guardo_paso_resultado('resultados.txt')
-    img_url_2 = muestro_grafica('resultados.txt')#mostrar_grafica`genera una gráfica y devuelve la URL o la ruta del archivo de imagen de la gráfica generada, que se guarda en `img_url_2.
+    img_url_2 = muestro_grafica(resultados,archivo_resultados)#mostrar_grafica`genera una gráfica y devuelve la URL o la ruta del archivo de imagen de la gráfica generada, que se guarda en `img_url_2.
     return render_template("grafica.html", img_url_2=img_url_2)
 """Finalmente, la función retorna el resultado de render_template, que renderiza la plantilla mostrar_grafica.html.
 - Se pasa img_url_2 como argumento a la plantilla, lo que permite que la página web acceda a la imagen generada y la muestre."""
@@ -178,8 +172,7 @@ def mostrar_grafica_curvas():
 #que muestra esa gráfica.
 @app.route("/grafica_torta")
 def mostrar_grafica_tortita():
-        resultado_dias=guardo_paso_resultado('resultados.txt')
-        img_url = muestro_grafica_torta('resultados.txt') #devolverá la URL de la imagen generada, que se almacena en img_url.  
+        img_url = muestro_grafica_torta(resultados,archivo_resultados) #devolverá la URL de la imagen generada, que se almacena en img_url.  
         return render_template("grafica_torta.html", img_url=img_url)
 """- Finalmente, se utiliza render_template para renderizar la plantilla HTML llamada mostrar_grafica_torta.html.
 - Se pasa img_url a la plantilla, lo que permite mostrar la gráfica de torta en la página web."""
@@ -189,7 +182,7 @@ def mostrar_grafica_tortita():
 @app.route('/verificar_archivo')
 def verificar_archivo():
     try:
-        content=verifico('resultados.txt')
+        content=verifico(archivo_resultados)
         return jsonify({'vacío': len(content) == 0})
     except FileNotFoundError:
         return jsonify({'vacío': True})

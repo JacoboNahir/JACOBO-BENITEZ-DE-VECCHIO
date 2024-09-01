@@ -3,10 +3,10 @@ import io
 import base64
 import matplotlib.pyplot as plt
 
-def leer_archivo_y_almacenamiento_de_datos(nombre_archivo):
+def leer_archivo_y_almacenamiento_de_datos(archivo):
     """lee el archivo y almacena los datos en una matriz(normalizado los str a minusculas)"""
     matriz_peliculas=[]
-    with open(nombre_archivo,"r",encoding="UTF-8") as archi:
+    with open(archivo,"r",encoding="UTF-8") as archi:
         linea=archi.readline().strip("\n")
         while linea!="":
             lista_linea=linea.split(";")
@@ -18,11 +18,10 @@ def leer_archivo_y_almacenamiento_de_datos(nombre_archivo):
 
   
 
-def guardar_resultados(resultados):
+def guardar_resultados(resultados,archivo_resultados):
     """guarda la informacion por cada jugador de la lista resultados y los guarda en un archivo txt para almacenar
     la informacion"""
     
-    archivo_resultados='resultados.txt'
     existen=leer_archivo_existente(archivo_resultados)
     with open(archivo_resultados, 'a') as archivo:
         for resultado in resultados:

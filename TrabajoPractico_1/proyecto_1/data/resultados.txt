@@ -7,3 +7,4 @@
 {'nombre': 'mateo', 'puntaje': '3/3', 'hora': '08:53:31', 'dia': '28/08/2024'}
 {'nombre': 'mateo', 'puntaje': '1/5', 'hora': '08:55:03', 'dia': '28/08/2024'}
 {'nombre': 'jusn', 'puntaje': '2/3', 'hora': '09:06:05', 'dia': '28/08/2024'}
+{'nombre': 'mateo', 'puntaje': '3/3', 'hora': '15:08:37', 'dia': '01/09/2024'}
